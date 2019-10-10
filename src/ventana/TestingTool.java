@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
@@ -47,7 +46,6 @@ public class TestingTool extends JFrame {
 	private JLabel lblModularizar = new JLabel();
 	private JLabel lblTodoBien = new JLabel();
 	String ruta;
-	ArrayList<int[]> matriz= new ArrayList<int[]>();
 	private boolean resultados = false;
 	
 	
@@ -65,11 +63,6 @@ public class TestingTool extends JFrame {
 
     Highlighter.HighlightPainter painter, painterFor, painterWhile;
 
-
-	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -83,12 +76,8 @@ public class TestingTool extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public TestingTool() {
 		
-
 		setTitle("Testing Tool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -120,9 +109,7 @@ public class TestingTool extends JFrame {
 			
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				textArea.removeAll();
-				matriz.clear();
-				
+				textArea.removeAll();				
 			}
 			
 			@Override
@@ -144,21 +131,14 @@ public class TestingTool extends JFrame {
 		listMetodos.addKeyListener(new KeyListener() {
 			
 			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void keyTyped(KeyEvent arg0) {}
 			
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void keyReleased(KeyEvent arg0) {}
 			
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				mostrarMetodo();
-				
 			}
 		});
 		
@@ -166,14 +146,12 @@ public class TestingTool extends JFrame {
 		contentPane.add(listMetodos);
 		
 		hilit = new DefaultHighlighter();
-        painter = new DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+        painter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
 
-        painterFor = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
-        painterWhile = new DefaultHighlighter.DefaultHighlightPainter(Color.PINK);
+        painterFor = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
+        painterWhile = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
        
 	
-		
-
 		JLabel lblNewLabel_1 = new JLabel("Estado del Metodo");
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 12));
@@ -255,9 +233,8 @@ public class TestingTool extends JFrame {
 		
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
-		
-				textArea.setForeground(Color.BLACK);
-				textArea.setEditable(false);
+		textArea.setForeground(Color.BLACK);
+		textArea.setEditable(false);
 		
 		textField_5 = new JTextField();
 		textField_5.setColumns(10);
@@ -304,12 +281,6 @@ public class TestingTool extends JFrame {
 		textField_9.setBounds(63, 70, 71, 20);
 		contentPane.add(textField_9);
 		textField_9.setColumns(10);
-		
-		JLabel lblReporteDeAnalisis = new JLabel("Reporte");
-		lblReporteDeAnalisis.setFont(new Font("Arial", Font.BOLD, 12));
-		lblReporteDeAnalisis.setForeground(new Color(0, 0, 0));
-		lblReporteDeAnalisis.setBounds(144, 310, 56, 14);
-		contentPane.add(lblReporteDeAnalisis);
 		contentPane.add(lblComentarCodigo);
 		lblComentarCodigo.setVisible(false);
 		contentPane.add(lblModularizar);
@@ -329,55 +300,25 @@ public class TestingTool extends JFrame {
 		int indeY = 0;
 
 		textArea.removeAll();
-		matriz.clear();
 		
 		try {
-		for(int i = 0; i< funciones.get(listMetodos.getSelectedIndex()).getCodigo().size();i++){
-			indeX = linea.length();
-			indeY = indeX+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i).length();
-			subLinea = funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
-			linea = linea+"\n"+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
-
-
-			if(subLinea.contains("for(")){
-				int a[] = {indeX,indeY};
-				matriz.add(a);					
+			for(int i = 0; i< funciones.get(listMetodos.getSelectedIndex()).getCodigo().size();i++){
+				indeX = linea.length();
+				indeY = indeX+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i).length();
+				subLinea = funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
+				linea = linea+"\n"+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
 			}
-			
-			if(subLinea.contains("if(")) {
-				int a[] = {indeX, indeY};
-				matriz.add(a);
-			}
-			
-			if(subLinea.contains("while(")) {
-				int a[] = {indeX, indeY};
-				matriz.add(a);
-			}
-		}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			indeX= indeY = 0;
 			textArea.removeAll();
-			matriz.clear();
 			textArea.requestFocus();
 			return;
 		}
 		textArea.setText(linea);
-		textArea.setHighlighter(hilit);
-		for(int i = 0; i<matriz.size();i++){
-			 try {
-
-					hilit.addHighlight(matriz.get(i)[0], matriz.get(i)[1], painterFor);
-					
-				} catch (BadLocationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		}
 		
 		indeX= indeY = 0;
 		textArea.requestFocus();
-									
-		
+							
 	}
 	
 	private void limpiarRegistro() {
