@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,42 +21,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
-import javax.imageio.ImageIO;
-
-
-import javax.swing.AbstractAction;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import java.awt.image.BufferedImage;
-
-
-
-import javax.swing.Action;
-
 import java.awt.event.ActionListener;
-
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import javax.swing.JScrollPane;
 import java.awt.Font;
-import java.awt.Graphics;
-
-import javax.swing.JList;
-import javax.swing.JTextPane;
-import javax.swing.JProgressBar;
-import javax.swing.UIManager;
-
-import java.io.FileNotFoundException;
-
-import javax.swing.JScrollPane;
-
 
 @SuppressWarnings("serial")
 public class TestingTool extends JFrame {
@@ -73,9 +46,7 @@ public class TestingTool extends JFrame {
 	private JLabel lblComentarCodigo = new JLabel();
 	private JLabel lblModularizar = new JLabel();
 	private JLabel lblTodoBien = new JLabel();
-	private final Action action = new SwingAction();;
 	String ruta;
-	private List codigo = new List();
 	ArrayList<int[]> matriz= new ArrayList<int[]>();
 	private boolean resultados = false;
 	
@@ -157,7 +128,7 @@ public class TestingTool extends JFrame {
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				mostrarMetodo();
-			
+				calcularValoresAnalisis();
 			}
 
 		});
@@ -277,18 +248,6 @@ public class TestingTool extends JFrame {
 		lblCodigoFuente.setForeground(new Color(0, 0, 0));
 		lblCodigoFuente.setBounds(20, 36, 114, 34);
 		contentPane.add(lblCodigoFuente);
-		
-		JButton btnNewButton_1 = new JButton("An\u00E1lisis");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		btnNewButton_1.setAction(action);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				calcularValoresAnalisis();
-			}
-		});
-		btnNewButton_1.setBounds(551, 310, 129, 34);
-		contentPane.add(btnNewButton_1);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(144, 60, 536, 239);
@@ -359,16 +318,8 @@ public class TestingTool extends JFrame {
 		lblTodoBien.setVisible(false);
 
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Correr Analisis");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
+	
 	private void mostrarMetodo(){ 
-		//Si se corrio un analisis se limpian los campos al cambiar de metodo
 		if(resultados)
 			limpiarRegistro();
 		
@@ -497,11 +448,14 @@ public class TestingTool extends JFrame {
 			textField_8.setText(String.format("%.2f", funciones.get(index).getVolumen()));
 			textField_9.setText(String.format("%.2f" , funciones.get(index).getEsfuerzo()));
 			
+			int desf = 0;
+			
 			if(porcentajeCodigoComentado < 50) {
-				lblComentarCodigo.setText("Se recomienda comentar m\u00E1s el c\u00F3digo");
+				lblComentarCodigo.setText("Comentar m\u00E1s el c\u00F3digo");
 				lblComentarCodigo.setBackground(new Color(128, 128, 128));
 				lblComentarCodigo.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblComentarCodigo.setBounds(200, 310, 254, 14);
+				lblComentarCodigo.setBounds(200, (310+desf), 254, 14);
+				desf += 15;
 				lblComentarCodigo.setVisible(true);
 				
 			}
@@ -511,10 +465,11 @@ public class TestingTool extends JFrame {
 				
 			
 			if(Integer.valueOf(textField_4.getText()) > 10 ){
-				lblModularizar.setText("Hay que modularizar el metodo para bajar su complejidad ciclomatica");
+				lblModularizar.setText("Modularizar el metodo para disminuir la Complejidad Ciclomatica");
 				lblModularizar.setBackground(new Color(128, 128, 128));
 				lblModularizar.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblModularizar.setBounds(200, 310, 400, 14);
+				lblModularizar.setBounds(200, (310+desf), 400, 14);
+				desf += 15;
 				lblModularizar.setVisible(true);
 			}
 			else {
@@ -523,10 +478,11 @@ public class TestingTool extends JFrame {
 				
 			
 			if(lblComentarCodigo.isVisible() == false && lblModularizar.isVisible() == false) {
-				lblTodoBien.setText("El metodo cumple con las metricas de mantenibilidad");
+				lblTodoBien.setText("¡Perfecto!");
 				lblTodoBien.setBackground(new Color(128, 128, 128));
 				lblTodoBien.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblTodoBien.setBounds(200, 310, 400, 14);
+				lblTodoBien.setBounds(200, (310+desf), 400, 14);
+				desf += 15;
 				lblTodoBien.setVisible(true);
 			}
 			
