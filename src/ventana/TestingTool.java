@@ -4,14 +4,12 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
@@ -22,54 +20,19 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
-import javax.imageio.ImageIO;
-
-
-import javax.swing.AbstractAction;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import java.awt.image.BufferedImage;
-
-
-
-import javax.swing.Action;
-
 import java.awt.event.ActionListener;
-
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import javax.swing.JScrollPane;
 import java.awt.Font;
-import java.awt.Graphics;
-
-import javax.swing.JList;
-import javax.swing.JTextPane;
-import javax.swing.JProgressBar;
-import javax.swing.UIManager;
-
-import java.io.FileNotFoundException;
-
-import javax.swing.JScrollPane;
-
 
 @SuppressWarnings("serial")
-public class HerramientaDeTesting extends JFrame {
-	
-	/*
-	 * PARECE QUE EL TIENE PROBLEMAS CON CODIGOS DE 100 LINEAS, VALIDAR PORQ
-	 * esto pasa en la funcion
-	 * private void jbnAceptarActionPerformed(java...)
-	 * private void mostrarUsuario
-	 * 
-	 * estos metodos son de la clase main
-	 */
+public class TestingTool extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -79,14 +42,10 @@ public class HerramientaDeTesting extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
-	JProgressBar progressBar = new JProgressBar();
 	private JLabel lblComentarCodigo = new JLabel();
 	private JLabel lblModularizar = new JLabel();
 	private JLabel lblTodoBien = new JLabel();
-	private final Action action = new SwingAction();;
 	String ruta;
-	private List codigo = new List();
-	ArrayList<int[]> matriz= new ArrayList<int[]>();
 	private boolean resultados = false;
 	
 	
@@ -104,16 +63,11 @@ public class HerramientaDeTesting extends JFrame {
 
     Highlighter.HighlightPainter painter, painterFor, painterWhile;
 
-
-	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HerramientaDeTesting frame = new HerramientaDeTesting();
+					TestingTool frame = new TestingTool();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -122,16 +76,12 @@ public class HerramientaDeTesting extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public HerramientaDeTesting() {
+	public TestingTool() {
 		
-
-		setTitle("EQUIPO 7*****Herramienta de Testing");
+		setTitle("Testing Tool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		setBounds(0, 0, 1024, 725);
+		setBounds(0, 0, 728, 643);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -142,32 +92,30 @@ public class HerramientaDeTesting extends JFrame {
 		textField.setBounds(122, 22, 616, 20);
 
 		textField = new JTextField();
-		textField.setBounds(122, 22, 623, 20);
+		textField.setBounds(122, 573, 558, 20);
 
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Metodos encontrados");
+		JLabel lblNewLabel = new JLabel("Métodos de la clase:");
 
-		lblNewLabel.setForeground(new Color(255, 0, 0));
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel.setForeground(new Color(0, 0, 0));
+		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 12));
 
-		lblNewLabel.setBounds(76, 102, 129, 34);
+		lblNewLabel.setBounds(20, 338, 129, 34);
 		
 		contentPane.add(lblNewLabel);
 		listMetodos.addFocusListener(new FocusListener() {
 			
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				textArea.removeAll();
-				matriz.clear();
-				
+				textArea.removeAll();				
 			}
 			
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				mostrarMetodo();
-			
+				calcularValoresAnalisis();
 			}
 
 		});
@@ -183,78 +131,69 @@ public class HerramientaDeTesting extends JFrame {
 		listMetodos.addKeyListener(new KeyListener() {
 			
 			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void keyTyped(KeyEvent arg0) {}
 			
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void keyReleased(KeyEvent arg0) {}
 			
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				mostrarMetodo();
-				
 			}
 		});
 		
-		listMetodos.setBounds(20, 142, 399, 188);
+		listMetodos.setBounds(20, 378, 660, 188);
 		contentPane.add(listMetodos);
 		
 		hilit = new DefaultHighlighter();
-        painter = new DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+        painter = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
 
-        painterFor = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
-        painterWhile = new DefaultHighlighter.DefaultHighlightPainter(Color.PINK);
+        painterFor = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
+        painterWhile = new DefaultHighlighter.DefaultHighlightPainter(Color.GRAY);
        
 	
-		
-
-		JLabel lblNewLabel_1 = new JLabel("Analisis del Metodo");
-		lblNewLabel_1.setForeground(new Color(255, 0, 0));
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1.setBounds(729, 112, 163, 14);
+		JLabel lblNewLabel_1 = new JLabel("Estado del Metodo");
+		lblNewLabel_1.setForeground(new Color(0, 0, 0));
+		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1.setBounds(20, 11, 114, 14);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("Lineas de codigo");
-		lblNewLabel_2.setBounds(638, 151, 100, 14);
+		JLabel lblNewLabel_2 = new JLabel("Lineas totales");
+		lblNewLabel_2.setBounds(144, 14, 67, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("Lineas comentadas");
-		lblNewLabel_3.setBounds(624, 176, 119, 14);
+		JLabel lblNewLabel_3 = new JLabel("Comentarios");
+		lblNewLabel_3.setBounds(317, 14, 67, 14);
 		contentPane.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel("Porcentaje de codigo comentado");
-		lblNewLabel_4.setBounds(559, 201, 191, 14);
+		JLabel lblNewLabel_4 = new JLabel("% de comentarios");
+		lblNewLabel_4.setBounds(484, 14, 89, 14);
 		contentPane.add(lblNewLabel_4);
 		
-		JLabel lblNewLabel_5 = new JLabel("Complejidad ciclomatica");
-		lblNewLabel_5.setBounds(600, 226, 150, 14);
+		JLabel lblNewLabel_5 = new JLabel("Complejidad Ciclomática");
+		lblNewLabel_5.setBounds(154, 39, 114, 14);
 
 		contentPane.add(lblNewLabel_5);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(749, 148, 86, 20);
+		textField_1.setBounds(221, 11, 86, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(749, 173, 86, 20);
+		textField_2.setBounds(388, 11, 86, 20);
 
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(749, 198, 86, 20);
+		textField_3.setBounds(583, 11, 86, 20);
 
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
 		
 		textField_4 = new JTextField();
-		textField_4.setBounds(749, 223, 86, 20);
+		textField_4.setBounds(278, 36, 86, 20);
 
 		contentPane.add(textField_4);
 		textField_4.setColumns(10);
@@ -262,12 +201,8 @@ public class HerramientaDeTesting extends JFrame {
 		
 		
 		
-		JButton btnNewButton = new JButton("Archivo");
-
-		btnNewButton.setBackground(Color.CYAN);
-
-
-		btnNewButton.setBounds(10, 21, 89, 23);
+		JButton btnNewButton = new JButton("Destino");
+		btnNewButton.setBounds(20, 572, 89, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -286,123 +221,76 @@ public class HerramientaDeTesting extends JFrame {
 		});
 		contentPane.add(btnNewButton);
 		
-		JLabel lblCodigoFuente = new JLabel("Codigo fuente");
-		lblCodigoFuente.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblCodigoFuente.setForeground(new Color(255, 0, 0));
-		lblCodigoFuente.setBounds(76, 336, 129, 34);
+		JLabel lblCodigoFuente = new JLabel("Código del Método");
+		lblCodigoFuente.setFont(new Font("Arial", Font.BOLD, 12));
+		lblCodigoFuente.setForeground(new Color(0, 0, 0));
+		lblCodigoFuente.setBounds(20, 36, 114, 34);
 		contentPane.add(lblCodigoFuente);
-		
-		JButton btnNewButton_1 = new JButton("Correr An\u00E1lisis");
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton_1.setBackground(Color.ORANGE);
-
-		//SABRI: ACA VALIDAR SI NO HAY NADA SELECCIONADO
-		
-		btnNewButton_1.setAction(action);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				calcularValoresAnalisis();
-			}
-		});
-		btnNewButton_1.setBounds(425, 253, 129, 76);
-		contentPane.add(btnNewButton_1);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 381, 536, 239);
+		scrollPane.setBounds(144, 60, 536, 239);
 		contentPane.add(scrollPane);
 		
 		textArea = new JTextArea();
-
+		scrollPane.setViewportView(textArea);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
-
-
-		scrollPane.setViewportView(textArea);
 		
 		textField_5 = new JTextField();
 		textField_5.setColumns(10);
-		textField_5.setBounds(749, 254, 86, 20);
+		textField_5.setBounds(63, 148, 71, 20);
 
 		contentPane.add(textField_5);
 		
 		textField_6 = new JTextField();
 		textField_6.setColumns(10);
-		textField_6.setBounds(749, 285, 86, 20);
+		textField_6.setBounds(63, 179, 71, 20);
 		contentPane.add(textField_6);
 		
-		JLabel lblFanIn = new JLabel("Fan in");
-		lblFanIn.setBounds(679, 260, 48, 14);
+		JLabel lblFanIn = new JLabel("FanIn");
+		lblFanIn.setBounds(10, 151, 48, 14);
 		contentPane.add(lblFanIn);
 		
-		JLabel lblFanOut = new JLabel("Fan out");
-		lblFanOut.setBounds(679, 285, 48, 14);
+		JLabel lblFanOut = new JLabel("FanOut");
+		lblFanOut.setBounds(10, 179, 48, 14);
 		contentPane.add(lblFanOut);
 		
 		JLabel lblLongitud = new JLabel("Longitud");
-		lblLongitud.setBounds(676, 316, 67, 14);
+		lblLongitud.setBounds(10, 123, 67, 14);
 		contentPane.add(lblLongitud);
 		
 		JLabel lblVolumen = new JLabel("Volumen");
-		lblVolumen.setBounds(676, 346, 67, 14);
+		lblVolumen.setBounds(10, 98, 67, 14);
 		contentPane.add(lblVolumen);
 		
-		JLabel lblEzfuerzo = new JLabel("Ezfuerzo");
-		lblEzfuerzo.setBounds(676, 375, 67, 14);
+		JLabel lblEzfuerzo = new JLabel("Esfuerzo");
+		lblEzfuerzo.setBounds(10, 73, 67, 14);
 		contentPane.add(lblEzfuerzo);
 		
 		textField_7 = new JTextField();
-		textField_7.setBounds(749, 316, 86, 20);
+		textField_7.setBounds(63, 123, 71, 20);
 		contentPane.add(textField_7);
 		textField_7.setColumns(10);
 		
 		textField_8 = new JTextField();
-		textField_8.setBounds(749, 343, 86, 20);
+		textField_8.setBounds(63, 98, 71, 20);
 		contentPane.add(textField_8);
 		textField_8.setColumns(10);
 		
 		textField_9 = new JTextField();
-		textField_9.setBounds(749, 372, 86, 20);
+		textField_9.setBounds(63, 70, 71, 20);
 		contentPane.add(textField_9);
 		textField_9.setColumns(10);
-		
-		JLabel lblReporteDeAnalisis = new JLabel("Reporte de Analisis");
-		lblReporteDeAnalisis.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblReporteDeAnalisis.setForeground(new Color(255, 0, 0));
-		lblReporteDeAnalisis.setBounds(689, 417, 261, 14);
-		contentPane.add(lblReporteDeAnalisis);
 		contentPane.add(lblComentarCodigo);
 		lblComentarCodigo.setVisible(false);
 		contentPane.add(lblModularizar);
 		lblModularizar.setVisible(false);
 		contentPane.add(lblTodoBien);
 		lblTodoBien.setVisible(false);
-		JLabel lblPoweredByEquipo = new JLabel("Powered by Equipo 7 - Analisis de Software - 2019 ");
-		lblPoweredByEquipo.setForeground(new Color(128, 128, 128));
-		lblPoweredByEquipo.setBounds(20, 654, 305, 14);
-		contentPane.add(lblPoweredByEquipo);
-		
-		
-		progressBar.setForeground(Color.GREEN);
-		progressBar.setBounds(679, 633, 156, 14);
-		contentPane.add(progressBar);
-		
-		JLabel lblNivelDeProgreso = new JLabel("Nivel de Progreso");
-		lblNivelDeProgreso.setBounds(711, 654, 146, 14);
-		contentPane.add(lblNivelDeProgreso);
-		
-		
 
 	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Correr Analisis");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
+	
 	private void mostrarMetodo(){ 
-		//Si se corrio un analisis se limpian los campos al cambiar de metodo
 		if(resultados)
 			limpiarRegistro();
 		
@@ -412,55 +300,25 @@ public class HerramientaDeTesting extends JFrame {
 		int indeY = 0;
 
 		textArea.removeAll();
-		matriz.clear();
 		
 		try {
-		for(int i = 0; i< funciones.get(listMetodos.getSelectedIndex()).getCodigo().size();i++){
-			indeX = linea.length();
-			indeY = indeX+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i).length();
-			subLinea = funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
-			linea = linea+"\n"+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
-
-
-			if(subLinea.contains("for(")){
-				int a[] = {indeX,indeY};
-				matriz.add(a);					
+			for(int i = 0; i< funciones.get(listMetodos.getSelectedIndex()).getCodigo().size();i++){
+				indeX = linea.length();
+				indeY = indeX+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i).length();
+				subLinea = funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
+				linea = linea+"\n"+funciones.get(listMetodos.getSelectedIndex()).getCodigo().get(i);
 			}
-			
-			if(subLinea.contains("if(")) {
-				int a[] = {indeX, indeY};
-				matriz.add(a);
-			}
-			
-			if(subLinea.contains("while(")) {
-				int a[] = {indeX, indeY};
-				matriz.add(a);
-			}
-		}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			indeX= indeY = 0;
 			textArea.removeAll();
-			matriz.clear();
 			textArea.requestFocus();
 			return;
 		}
 		textArea.setText(linea);
-		textArea.setHighlighter(hilit);
-		for(int i = 0; i<matriz.size();i++){
-			 try {
-
-					hilit.addHighlight(matriz.get(i)[0], matriz.get(i)[1], painterFor);
-					
-				} catch (BadLocationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		}
 		
 		indeX= indeY = 0;
 		textArea.requestFocus();
-									
-		
+							
 	}
 	
 	private void limpiarRegistro() {
@@ -477,7 +335,6 @@ public class HerramientaDeTesting extends JFrame {
 		lblComentarCodigo.setVisible(false);
 		lblModularizar.setVisible(false);
 		lblTodoBien.setVisible(false);
-		progressBar.setValue(0);
 		resultados=false;
 	}
 	
@@ -532,56 +389,49 @@ public class HerramientaDeTesting extends JFrame {
 			textField_8.setText(String.format("%.2f", funciones.get(index).getVolumen()));
 			textField_9.setText(String.format("%.2f" , funciones.get(index).getEsfuerzo()));
 			
+			int desf = 0;
+			
 			if(porcentajeCodigoComentado < 50) {
-				lblComentarCodigo.setText("Se recomienda comentar m\u00E1s el c\u00F3digo");
+				lblComentarCodigo.setText("Comentar m\u00E1s el c\u00F3digo");
 				lblComentarCodigo.setBackground(new Color(128, 128, 128));
 				lblComentarCodigo.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblComentarCodigo.setBounds(638, 468, 254, 14);
+				lblComentarCodigo.setBounds(200, (310+desf), 254, 14);
+				desf += 15;
 				lblComentarCodigo.setVisible(true);
 				
 			}
 			else {
 				lblComentarCodigo.setVisible(false);
-				progressBar.setValue(progressBar.getValue()+ 50);
 			}
 				
 			
 			if(Integer.valueOf(textField_4.getText()) > 10 ){
-				lblModularizar.setText("Hay que modularizar el metodo para bajar su complejidad ciclomatica");
+				lblModularizar.setText("Modularizar el metodo para disminuir la Complejidad Ciclomatica");
 				lblModularizar.setBackground(new Color(128, 128, 128));
 				lblModularizar.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblModularizar.setBounds(575, 500, 400, 14);
+				lblModularizar.setBounds(200, (310+desf), 400, 14);
+				desf += 15;
 				lblModularizar.setVisible(true);
 			}
 			else {
 				lblModularizar.setVisible(false);
-				progressBar.setValue(progressBar.getValue()+ 50);
 			}
 				
 			
 			if(lblComentarCodigo.isVisible() == false && lblModularizar.isVisible() == false) {
-				lblTodoBien.setText("El metodo cumple con las metricas de mantenibilidad");
+				lblTodoBien.setText("¡Perfecto!");
 				lblTodoBien.setBackground(new Color(128, 128, 128));
 				lblTodoBien.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblTodoBien.setBounds(600, 500, 400, 14);
+				lblTodoBien.setBounds(200, (310+desf), 400, 14);
+				desf += 15;
 				lblTodoBien.setVisible(true);
 			}
 			
 		}catch(Exception e) {
-			//en caso de correr analisis sin seleccionar un metodo
 			resultados = false;
 			return;
 		}
 		
 
 		}
-	
-	public void paint(Graphics gra) {
-		super.paint(gra);
-		try {
-			BufferedImage fondo = ImageIO.read(new File("logo_unlam.png"));
-			gra.drawImage(fondo, 870, 40, this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}}
 }
