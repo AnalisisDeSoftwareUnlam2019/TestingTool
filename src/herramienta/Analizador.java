@@ -249,12 +249,6 @@ public class Analizador {
 		this.n1 = listaOperadores.size();
 		this.n2 = listaOperandos.size();
 	}
-
-	public double getEsfuerzo() {
-		final double constante = 0.1;
-		double esfuerzo = this.getVolumen() / constante;
-		return esfuerzo;
-	}
 	
 	public ArrayList<String> getCodigo() {
 		return this.codigo;

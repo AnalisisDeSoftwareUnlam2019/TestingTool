@@ -68,7 +68,7 @@ public class TestClass {
 				return "Isosceles";
 			}
 		} else {
-			return "No es triángulo";
+			return "No es triangulo";
 		}
 	}
 

@@ -53,7 +53,6 @@ public class TestingTool extends JFrame {
 	private JTextField textField_6;
 	private JTextField textField_7;
 	private JTextField textField_8;
-	private JTextField textField_9;
 
 	Highlighter.HighlightPainter painter, painterFor, painterWhile;
 
@@ -90,7 +89,7 @@ public class TestingTool extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Métodos de la clase:");
+		JLabel lblNewLabel = new JLabel("Mï¿½todos de la clase:");
 
 		lblNewLabel.setForeground(new Color(0, 0, 0));
 		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 12));
@@ -164,7 +163,7 @@ public class TestingTool extends JFrame {
 		lblNewLabel_4.setBounds(484, 14, 89, 14);
 		contentPane.add(lblNewLabel_4);
 
-		JLabel lblNewLabel_5 = new JLabel("Complejidad Ciclomática");
+		JLabel lblNewLabel_5 = new JLabel("Complejidad Ciclomï¿½tica");
 		lblNewLabel_5.setBounds(154, 39, 114, 14);
 
 		contentPane.add(lblNewLabel_5);
@@ -208,7 +207,7 @@ public class TestingTool extends JFrame {
 		});
 		contentPane.add(btnNewButton);
 
-		JLabel lblCodigoFuente = new JLabel("Código del Método");
+		JLabel lblCodigoFuente = new JLabel("Cï¿½digo del Mï¿½todo");
 		lblCodigoFuente.setFont(new Font("Arial", Font.BOLD, 12));
 		lblCodigoFuente.setForeground(new Color(0, 0, 0));
 		lblCodigoFuente.setBounds(20, 36, 114, 34);
@@ -250,10 +249,6 @@ public class TestingTool extends JFrame {
 		lblVolumen.setBounds(10, 98, 67, 14);
 		contentPane.add(lblVolumen);
 
-		JLabel lblEzfuerzo = new JLabel("Esfuerzo");
-		lblEzfuerzo.setBounds(10, 73, 67, 14);
-		contentPane.add(lblEzfuerzo);
-
 		textField_7 = new JTextField();
 		textField_7.setBounds(63, 123, 71, 20);
 		contentPane.add(textField_7);
@@ -264,10 +259,6 @@ public class TestingTool extends JFrame {
 		contentPane.add(textField_8);
 		textField_8.setColumns(10);
 
-		textField_9 = new JTextField();
-		textField_9.setBounds(63, 70, 71, 20);
-		contentPane.add(textField_9);
-		textField_9.setColumns(10);
 
 	}
 
@@ -302,7 +293,6 @@ public class TestingTool extends JFrame {
 		textField_6.setText("");
 		textField_7.setText("");
 		textField_8.setText("");
-		textField_9.setText("");
 		resultados = false;
 	}
 
@@ -348,7 +338,6 @@ public class TestingTool extends JFrame {
 			textField_6.setText(funciones.get(index).getFanOut() + "");
 			textField_7.setText(funciones.get(index).getLongitud() + "");
 			textField_8.setText(String.format("%.2f", funciones.get(index).getVolumen()));
-			textField_9.setText(String.format("%.2f", funciones.get(index).getEsfuerzo()));
 
 		} catch (Exception e) {
 			resultados = false;
